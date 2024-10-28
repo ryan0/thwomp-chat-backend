@@ -14,7 +14,7 @@ import java.security.Principal;
 import java.util.List;
 
 @RestController
-@RequestMapping("/chat")
+@RequestMapping("/api/chat")
 public class ChatController {
 
     ChatRepository chatRepository;
@@ -24,7 +24,6 @@ public class ChatController {
     }
 
     @GetMapping
-    @CrossOrigin(origins = "http://localhost:4200")
     public ResponseEntity<List<Chat>> getUserChats(Authentication authentication) {
         ThwompUserDetails userDetails = (ThwompUserDetails) authentication.getPrincipal();
         List<Chat> userChats = chatRepository.findChatsForUser(userDetails.getId());
