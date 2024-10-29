@@ -10,7 +10,7 @@ import java.util.List;
 public class ThwompUserDetails implements UserDetails {
     private final User user;
 
-    ThwompUserDetails(User user) {
+    public ThwompUserDetails(User user) {
         this.user = user;
     }
 
