@@ -2,7 +2,10 @@ package dev.rmiller.thwompchatbackend.user;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public class UserRepository {
@@ -23,7 +26,15 @@ public class UserRepository {
             return rowObject;
         };
 
-        return jdbc.queryForObject(sql, rowMapper, username);
+        var queryList = jdbc.query(sql, rowMapper, username);
+
+        if (queryList.isEmpty()) {
+            throw new UsernameNotFoundException(username);
+        } else if (queryList.size() == 1) {
+            return queryList.get(0);
+        } else {
+            throw new IllegalStateException("Found more than one user with username: " + username);
+        }
     }
 
 }
