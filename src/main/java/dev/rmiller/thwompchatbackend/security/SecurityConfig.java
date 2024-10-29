@@ -21,6 +21,7 @@ public class SecurityConfig {
                 .loginPage("/login")
                 .permitAll()
         );
+        http.logout(logout -> logout.logoutSuccessUrl("http://localhost:4200"));
         http.authorizeHttpRequests(auth -> auth
                 .anyRequest().authenticated()
         );

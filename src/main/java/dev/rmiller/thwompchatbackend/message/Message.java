@@ -7,6 +7,7 @@ public class Message {
     private long id;
     private String text;
     private Timestamp sentAt;
+    private String senderName;
     private long userId;
     private long chatId;
 
@@ -16,6 +17,14 @@ public class Message {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 
     public long getChatId() {

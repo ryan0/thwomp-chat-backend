@@ -33,4 +33,12 @@ public class ChatRepository {
         return jdbc.query(sql, rowMapper, userId);
     }
 
+    public boolean hasUser(long chatId, long userId) {
+        String sql = """
+                SELECT COUNT(*) = 1 FROM user_chat_registry
+                WHERE chat_id = ? AND  user_id = ?;""";
+
+        return Boolean.TRUE.equals(jdbc.queryForObject(sql, Boolean.class, chatId, userId));
+    }
+
 }
