@@ -13,11 +13,17 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.cors(Customizer.withDefaults()).
-                formLogin((customize)  -> customize
-                        .defaultSuccessUrl("http://localhost:4200/app", true))
-                .authorizeHttpRequests(c -> c.anyRequest().authenticated())
-                .build();
+        http.cors(Customizer.withDefaults());
+        http.formLogin(form  -> form
+                .defaultSuccessUrl("http://localhost:4200/app")
+                .loginPage("/login")
+                .permitAll()
+        );
+        http.authorizeHttpRequests(auth -> auth
+                .requestMatchers("/login").permitAll()
+                .anyRequest().authenticated()
+        );
+        return http.build();
     }
 
     @Bean
