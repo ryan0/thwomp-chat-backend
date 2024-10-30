@@ -7,7 +7,16 @@ import org.springframework.context.annotation.Configuration;
 @ConfigurationProperties(prefix = "thwomp")
 public class ThwompConfig {
 
+    private String frontendBaseUrl;
     private boolean genTestRows;
+
+    public String getFrontendBaseUrl() {
+        return frontendBaseUrl;
+    }
+
+    public void setFrontendBaseUrl(String frontendBaseUrl) {
+        this.frontendBaseUrl = frontendBaseUrl;
+    }
 
     public boolean isGenTestRows() {
         return genTestRows;

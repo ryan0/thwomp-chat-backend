@@ -2,24 +2,32 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
 <head>
     <title>Please Log In</title>
+    <link rel="stylesheet" type="text/css" href="/main.css"/>
 </head>
+
 <body>
-<h1>Please Log In</h1>
-<div th:if="${param.error}">
-    Invalid username and password.</div>
-<div th:if="${param.logout}">
-    You have been logged out.</div>
-<form th:action="@{/login}" method="post">
-    <div>
-        <label for="username">Username</label>
-        <input  id="username" type="text" name="username"/>
+
+<div class="content">
+    <h1>Sign in to ThwompChat</h1>
+
+    <div class="login-form">
+        <form th:action="@{/login}" method="post">
+            <div class="login-field">
+                <label for="username">Username</label> <br />
+                <input  id="username" type="text" name="username"/>
+            </div>
+            <div class="login-field">
+                <label for="password">Password</label> <br />
+                <input id="password" type="password" name="password"/>
+            </div>
+            <input class="login-button" type="submit" value="Log in" />
+            <p class="register">Need an account? <a href="/">Register</a></p>
+
+            <div class="error" th:if="${param.error}">Invalid username and password.</div>
+            <div class="logout-msg" th:if="${param.logout}">You have been logged out.</div>
+        </form>
     </div>
-    <div>
-        <label for="password">Password</label>
-        <input id="password" type="password" name="password"/>
-    </div>
-    <input type="submit" value="Log in" />
-    <p>Need an account? <a href="/">Register</a></p>
-</form>
+</div>
+
 </body>
 </html>

@@ -5,7 +5,6 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 
 @Repository
 public class UserRepository {
@@ -16,6 +15,7 @@ public class UserRepository {
         this.jdbc = jdbcTemplate;
     }
 
+    //TODO consider moving to security package
     public User findSecurityDetails(String username) {
         String sql = "SELECT id, username, password FROM users WHERE username = ?";
         RowMapper<User> rowMapper = (r, i) -> {
