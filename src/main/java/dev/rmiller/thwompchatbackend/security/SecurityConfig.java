@@ -27,7 +27,7 @@ public class SecurityConfig {
         );
         http.logout(logout -> logout.logoutSuccessUrl(frontendBaseUrl));
         http.authorizeHttpRequests(auth -> auth
-                .requestMatchers("/main.css").permitAll()
+                .requestMatchers("/main.css", "/api/utility/healthcheck").permitAll()
                 .anyRequest().authenticated()
         );
         return http.build();
