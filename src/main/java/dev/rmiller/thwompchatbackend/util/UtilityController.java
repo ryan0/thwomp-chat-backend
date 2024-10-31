@@ -10,7 +10,7 @@ public class UtilityController {
 
     @GetMapping("/healthcheck")
     public String healthcheck() {
-        return "Thwomp is OK";
+        return "Thwomp is doing OK";
     }
 
 

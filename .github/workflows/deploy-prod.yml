@@ -1,0 +1,42 @@
+name: Deploy to Production
+run-name: Deploy ${{github.ref}} | By ${{ github.actor }}
+
+on:
+  workflow_dispatch:
+
+jobs:
+  run-deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    steps:
+      - name: setup connection
+        run: |
+          install -m 600 -D /dev/null ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          cat >>~/.ssh/config <<END
+          Host prod
+            HostName ${{ secrets.SSH_HOST }}
+            User ${{ secrets.SSH_USER }}
+            StrictHostKeyChecking no
+          END
+
+      - name: pull changes to server
+        run: ssh prod 'cd ${{ secrets.WORK_DIR }} && git fetch && git reset --hard origin/main'
+
+      - name: run build ${{github.run_number}}
+        run: >
+          ssh prod '-DBUILD_ENVIRONMENT=prod
+          -DDB_ROUTE=${{ secrets.DB_ROUTE }}
+          -DDB_USER=${{ secrets.DB_USER }}
+          -DDB_PASSWORD=${{ secrets.DB_PASSWORD }}
+          install'
+
+      - name: replace previous artifact
+        run: >
+          ssh prod 'rm ${{ secrets.INSTALL_PATH }}/thwomp.jar && 
+          cp ${{ secrets.BUILD_PATH }} ${{ secrets.INSTALL_PATH }}'
+
+      - name: activate build ${{github.run_number}}
+        run: >
+          ssh prod 'sudo systemctl restart thwomp.service &&
+          systemctl status thwomp.service --no-pager'
