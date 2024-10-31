@@ -24,7 +24,7 @@ jobs:
         run: ssh prod 'cd ${{ secrets.WORK_DIR }} && git fetch && git reset --hard origin/main'
 
       - name: run build ${{github.run_number}}
-        run: ssh prod 'mvn -DBUILD_ENVIRONMENT=prod -DDB_ROUTE=${{ secrets.DB_ROUTE }} -DDB_USER=${{ secrets.DB_USER }} -DDB_PASSWORD=${{ secrets.DB_PASSWORD }} install'
+        run: ssh prod 'cd ${{ secrets.WORK_DIR }} && mvn -DBUILD_ENVIRONMENT=prod -DDB_ROUTE=${{ secrets.DB_ROUTE }} -DDB_USER=${{ secrets.DB_USER }} -DDB_PASSWORD=${{ secrets.DB_PASSWORD }} install'
 
       - name: replace previous artifact
         run: ssh prod 'rm ${{ secrets.INSTALL_PATH }}/thwomp.jar && cp ${{ secrets.BUILD_PATH }} ${{ secrets.INSTALL_PATH }}'
