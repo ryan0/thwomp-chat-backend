@@ -26,12 +26,12 @@ public class MessageController {
             @PathVariable long chatId,
             @AuthenticationPrincipal ThwompUserDetails userDetails)
     {
-        if (!chatRepository.hasUser(chatId, userDetails.getId())) {
+        if (chatRepository.hasUser(chatId, userDetails.getId())) {
+            var messages = messageRepository.findMessagesByChatId(chatId);
+            return ResponseEntity.ok(messages);
+        } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-
-        var messages = messageRepository.findMessagesByChatId(chatId);
-        return ResponseEntity.ok(messages);
     }
 
     @PostMapping("/chat/{chatId}")
@@ -40,12 +40,12 @@ public class MessageController {
             @RequestBody MessageNew message,
             @AuthenticationPrincipal ThwompUserDetails userDetails)
     {
-        if (!chatRepository.hasUser(chatId, userDetails.getId())) {
+        if (chatRepository.hasUser(chatId, userDetails.getId())) {
+            var inserted = messageRepository.insertMessageFromUserIntoChat(
+                    message.getText(), userDetails.getId(), chatId, userDetails.getUsername());
+            return ResponseEntity.ok(inserted);
+        } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
-        var inserted = messageRepository.insertMessageFromUserIntoChat(
-                message.getText(), userDetails.getId(), chatId, userDetails.getUsername());
-        return ResponseEntity.ok(inserted);
     }
-
 }
